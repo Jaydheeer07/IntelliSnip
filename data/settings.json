@@ -1,0 +1,8 @@
+{
+    "api_keys": {
+        "openai": ""
+    },
+    "history_limit": 15,
+    "startup_enabled": true,
+    "theme": "dark"
+}

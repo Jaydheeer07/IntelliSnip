@@ -1,0 +1,13 @@
+Metadata-Version: 2.1
+Name: IntelliSnip
+Version: 0.1
+Requires-Dist: colorama==0.4.6
+Requires-Dist: iniconfig==2.0.0
+Requires-Dist: packaging==24.1
+Requires-Dist: pillow==11.0.0
+Requires-Dist: pluggy==1.5.0
+Requires-Dist: PyQt6==6.7.1
+Requires-Dist: PyQt6-Qt6==6.7.3
+Requires-Dist: PyQt6_sip==13.8.0
+Requires-Dist: pytest==8.3.3
+Requires-Dist: setuptools==75.2.0

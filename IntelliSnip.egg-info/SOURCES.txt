@@ -1,0 +1,15 @@
+setup.py
+IntelliSnip.egg-info/PKG-INFO
+IntelliSnip.egg-info/SOURCES.txt
+IntelliSnip.egg-info/dependency_links.txt
+IntelliSnip.egg-info/entry_points.txt
+IntelliSnip.egg-info/requires.txt
+IntelliSnip.egg-info/top_level.txt
+src/__init__.py
+src/config/__init__.py
+src/config/settings.py
+src/core/__init__.py
+src/core/application.py
+src/core/screen_capture.py
+src/ui/__init__.py
+src/ui/settings_window.py
