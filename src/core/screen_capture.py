@@ -1,11 +1,13 @@
 from PyQt6.QtWidgets import QWidget, QApplication
 from PyQt6.QtGui import QPainter, QPen, QColor
-from PyQt6.QtCore import Qt, QRect
+from PyQt6.QtCore import Qt, QRect, pyqtSignal
 from PIL import ImageGrab
 import sys
 import os
 
 class ScreenCaptureOverlay(QWidget):
+    capture_completed = pyqtSignal(str)  # Add this signal
+
     def __init__(self):
         super().__init__()
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.WindowStaysOnTopHint)
@@ -52,25 +54,22 @@ class ScreenCaptureOverlay(QWidget):
 
     def capture_screen(self):
         if self.start_pos and self.end_pos:
-            # Make the overlay fully transparent before capture
             self.setWindowOpacity(0)
             self.repaint()
-            
-            # Add small delay to ensure opacity change is applied
             QApplication.processEvents()
             
             rect = QRect(self.start_pos, self.end_pos).normalized()
             screenshot = ImageGrab.grab(bbox=(rect.x(), rect.y(), rect.right(), rect.bottom()))
             
-            # Ensure the images directory exists
             os.makedirs('images', exist_ok=True)
             
-            screenshot.save(f'images/captured_image_{self.screenshot_count}.png')
-            print(f"Screen captured and saved as 'captured_image_{self.screenshot_count}.png'")
+            image_path = f'images/captured_image_{self.screenshot_count}.png'
+            screenshot.save(image_path)
+            print(f"Screen captured and saved as '{image_path}'")
             self.screenshot_count += 1
             
-            # Restore overlay opacity
             self.setWindowOpacity(0.3)
+            self.capture_completed.emit(image_path)  # Emit the signal with image path
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

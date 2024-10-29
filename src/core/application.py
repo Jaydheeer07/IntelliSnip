@@ -6,6 +6,7 @@ from PyQt6.QtWidgets import QApplication, QMenu, QSystemTrayIcon
 from screen_capture import ScreenCaptureOverlay
 
 from src.config.settings import SettingsManager
+from src.ui.floating_chat_window import FloatingChatWindow
 from src.ui.settings_window import SettingsWindow
 
 
@@ -14,6 +15,7 @@ class IntelliSnipApp(QApplication):
         super().__init__(argv)
         self.overlay = None
         self.settings_window = None
+        self.chat_window = None
         self.initUI()
         self.load_settings()
 
@@ -48,7 +50,16 @@ class IntelliSnipApp(QApplication):
     def capture_screen(self):
         if self.overlay is None or not self.overlay.isVisible():
             self.overlay = ScreenCaptureOverlay()
+            self.overlay.capture_completed.connect(self.open_chat_with_image)
             self.overlay.show()
+
+    def open_chat_with_image(self, image_path):
+        if self.chat_window is None or not self.chat_window.isVisible():
+            self.chat_window = FloatingChatWindow(image_path)
+            # Connect signals to slots
+            self.chat_window.retry_requested.connect(self.capture_screen) 
+            self.chat_window.window_closed.connect(self.chat_window.hide)
+            self.chat_window.show()
 
     def open_settings(self):
         if self.settings_window is None or not self.settings_window.isVisible():
@@ -58,7 +69,6 @@ class IntelliSnipApp(QApplication):
     def quit(self):
         self.save_settings()
         super().quit()
-
 
 if __name__ == "__main__":
     app = IntelliSnipApp(sys.argv)
